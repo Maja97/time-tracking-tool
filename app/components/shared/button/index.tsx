@@ -10,6 +10,7 @@ interface Props {
   disabled?: boolean;
   className?: string;
   type?: 'submit' | 'reset' | 'button';
+  textStyle?: string;
   onClick?: () => void;
 }
 
@@ -20,7 +21,8 @@ const Button = ({
   icon,
   disabled = false,
   className,
-  type = 'button'
+  type = 'button',
+  textStyle
 }: Props) => {
   return (
     <BaseButton
@@ -29,7 +31,7 @@ const Button = ({
       type={type}
       className={`${styles[variant]} ${styles.base} ${className}`}
       icon={icon}>
-      {typeof children === 'string' ? <p>{children}</p> : children}
+      {typeof children === 'string' ? <p className={textStyle}>{children}</p> : children}
     </BaseButton>
   );
 };

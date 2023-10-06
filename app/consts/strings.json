@@ -1,0 +1,13 @@
+{
+  "navbar": {
+    "title": "Tracking tool",
+    "logout": "Logout",
+    "trackers": "Trackers",
+    "history": "History"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "This page could not be found",
+    "link": "Go to home page"
+  }
+}

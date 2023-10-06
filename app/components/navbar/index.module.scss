@@ -1,4 +1,5 @@
 @import '@app/styles/colors';
+@import '@app/styles/mixins';
 
 .wrapper {
   padding-left: 44px;
@@ -21,13 +22,11 @@
 }
 
 .flex {
-  display: flex;
-  align-items: center;
+  @include flex-align-center;
 }
 
 .lastButton {
-  padding: 50px 44px;
-  color: #c4c5d7;
+  color: $grey-light;
   font-weight: 600;
   font-size: 15px;
 }

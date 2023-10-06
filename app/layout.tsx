@@ -14,13 +14,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <PrimeReactProvider>
+    <PrimeReactProvider>
+      <html lang="en">
         <body className={nunitoSans.className}>
           <NavBar />
           {children}
         </body>
-      </PrimeReactProvider>
-    </html>
+      </html>
+    </PrimeReactProvider>
   );
 }
