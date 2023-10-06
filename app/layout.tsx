@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Nunito_Sans } from 'next/font/google';
 import './globals.scss';
-import '/primereact-theme/mytheme/theme.scss';
+import '@app/primereact-theme/mytheme/theme.scss';
 import NavBar from './components/navbar';
 import { PrimeReactProvider } from 'primereact/api';
 
