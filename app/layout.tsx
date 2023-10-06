@@ -1,6 +1,9 @@
-import './globals.css';
 import type { Metadata } from 'next';
 import { Nunito_Sans } from 'next/font/google';
+import './globals.scss';
+import '/primereact-theme/mytheme/theme.scss';
+import NavBar from './components/navbar';
+import { PrimeReactProvider } from 'primereact/api';
 
 const nunitoSans = Nunito_Sans({ subsets: ['latin'] });
 
@@ -12,7 +15,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={nunitoSans.className}>{children}</body>
+      <PrimeReactProvider>
+        <body className={nunitoSans.className}>
+          <NavBar />
+          {children}
+        </body>
+      </PrimeReactProvider>
     </html>
   );
 }

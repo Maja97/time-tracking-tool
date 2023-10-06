@@ -27,8 +27,8 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
       type={type}
-      className={`${styles[variant]} ${styles.base} ${className}`}>
-      {icon && <div>{icon}</div>}
+      className={`${styles[variant]} ${styles.base} ${className}`}
+      icon={icon}>
       {typeof children === 'string' ? <p>{children}</p> : children}
     </BaseButton>
   );

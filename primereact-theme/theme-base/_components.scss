@@ -1,0 +1,6 @@
+@import '_mixins';
+@import '_colors';
+
+@layer primereact {
+  @import './components/menu/_tabmenu';
+}

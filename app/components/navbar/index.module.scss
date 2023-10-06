@@ -1,0 +1,33 @@
+@import '@app/styles/colors';
+
+.wrapper {
+  padding-left: 44px;
+  padding-top: 7px;
+  padding-right: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $primary;
+  border-radius: 0px 0px 22px 22px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 17px;
+  color: $white;
+  padding-left: 9px;
+  padding-top: 8px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.lastButton {
+  padding: 50px 44px;
+  color: #c4c5d7;
+  font-weight: 600;
+  font-size: 15px;
+}

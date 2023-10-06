@@ -1,0 +1,79 @@
+/// Background for a parent element containing all the headers of a tabview
+/// @group menu
+$tabviewNavBg: $secondaryColor;
+
+/// Border for a parent element containing all the headers of a tabview
+/// @group menu
+$tabviewNavBorder: 1px solid #c4c5d7;
+
+/// Border width for a parent element containing all the headers of a tabview
+/// @group menu
+$tabviewNavBorderWidth: 0 0 2px 0;
+
+/// Spacing between tabview headers
+/// @group menu
+$tabviewHeaderSpacing: 0;
+
+/// Border of a tabview header
+/// @group menu
+$tabviewHeaderBorder: solid #c4c5d7;
+
+/// Border width of a tabview header
+/// @group menu
+$tabviewHeaderBorderWidth: 0 0 2px 0;
+
+/// Border color of a tabview header
+/// @group menu
+$tabviewHeaderBorderColor: transparent transparent #c4c5d7 transparent;
+
+/// Background of a tabview header
+/// @group menu
+$tabviewHeaderBg: $secondaryColor;
+
+/// Text color of a tabview header
+/// @group menu
+$tabviewHeaderTextColor: $textSecondaryColor;
+
+/// Font weight of a panel header
+/// @group menu
+$panelHeaderFontWeight: 600;
+
+/// Padding of a panel header
+/// @group menu
+$panelHeaderPadding: 50px 44px;
+
+/// Font weight of a tabview header
+/// @group menu
+$tabviewHeaderFontWeight: $panelHeaderFontWeight;
+
+/// Padding of a tabview header
+/// @group menu
+$tabviewHeaderPadding: $panelHeaderPadding;
+
+/// Margin of a tabview header
+/// @group menu
+$tabviewHeaderMargin: 0 0 -2px 0;
+
+/// Background of a tabview header in hover state
+/// @group menu
+$tabviewHeaderHoverBg: $secondaryColor;
+
+/// Border of a tabview header in hover state
+/// @group menu
+$tabviewHeaderHoverBorderColor: #9ba2aa;
+
+/// Text color of a tabview header in hover state
+/// @group menu
+$tabviewHeaderTextHoverColor: $textSecondaryColor;
+
+/// Background of a tabview header in selected state
+/// @group menu
+$tabviewHeaderActiveBg: $secondaryColor;
+
+/// Border of a tabview header in selected state
+/// @group menu
+$tabviewHeaderActiveBorderColor: $primaryColor;
+
+/// Text color of a tabview header in selected state
+/// @group menu
+$tabviewHeaderTextActiveColor: $primaryColor;
