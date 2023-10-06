@@ -1,4 +1,4 @@
-import React from 'react';
+import { Button as BaseButton } from 'primereact/button';
 import styles from './index.module.scss';
 
 type Variant = 'primary' | 'secondary' | 'underlined';
@@ -23,14 +23,14 @@ const Button = ({
   type = 'button'
 }: Props) => {
   return (
-    <button
+    <BaseButton
       onClick={onClick}
       disabled={disabled}
       type={type}
       className={`${styles[variant]} ${styles.base} ${className}`}>
       {icon && <div>{icon}</div>}
       {typeof children === 'string' ? <p>{children}</p> : children}
-    </button>
+    </BaseButton>
   );
 };
 
