@@ -1,0 +1,31 @@
+@import '@app/styles/colors';
+
+.base {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 3px;
+  color: $white;
+  line-height: 17px;
+  font-weight: 700;
+}
+
+.primary {
+  background-color: $secondary;
+  padding: 10px 20px 10px 10px;
+  font-size: 14px;
+}
+
+.secondary {
+  background-color: $primary;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.underlined {
+  padding: 0;
+  color: $seconday;
+  font-size: 14px;
+  text-decoration: underline;
+}
