@@ -2,3 +2,12 @@
   display: flex;
   align-items: center;
 }
+
+@mixin position-absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: -moz-center;
+  text-align: -webkit-center;
+}
