@@ -9,5 +9,28 @@
     "title": "404",
     "message": "This page could not be found",
     "link": "Go to home page"
+  },
+  "login": {
+    "title": "Login",
+    "passwordTooShort": "Password too short",
+    "labels": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "userImageAlt": "New user svg image",
+    "newUser": "Need an account?",
+    "register": "Register here"
+  },
+  "register": {
+    "title": "Register",
+    "existingAccount": "Have an account?",
+    "login": "Log in",
+    "passwordsMismatch": "Your passwords do not match",
+    "passwordTooShort": "Password too short",
+    "labels": {
+      "email": "Email",
+      "password": "Password",
+      "repeatPassword": "Repeat password"
+    }
   }
 }

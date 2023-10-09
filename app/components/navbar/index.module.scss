@@ -2,6 +2,7 @@
 @import '@app/styles/mixins';
 
 .wrapper {
+  position: relative;
   padding-left: 44px;
   padding-top: 7px;
   padding-right: 25px;
@@ -10,12 +11,16 @@
   justify-content: space-between;
   background-color: $primary;
   border-radius: 0px 0px 22px 22px;
+  float: left;
+  width: 100%;
+  z-index: 10;
+}
+
+.wrapperPadding {
+  padding: 44px 25px 36px 44px;
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 17px;
   color: $white;
   padding-left: 9px;
   padding-top: 8px;
@@ -26,6 +31,10 @@
 }
 
 .lastButton {
+  padding: 50px 44px 42px 44px !important;
+}
+
+.lastButtonText {
   color: $grey-light;
   font-weight: 600;
   font-size: 15px;

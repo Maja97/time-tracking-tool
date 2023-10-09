@@ -1,0 +1,41 @@
+@import '@app/styles/colors';
+@import '@app/styles/mixins';
+
+.wrapper {
+  min-height: 800px;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.form {
+  @include position-absolute-center;
+  padding: 44px 35px 60px 35px;
+  background-color: $grey-fill;
+  border: 0.5px solid $grey-stroke;
+  border-radius: 8px;
+}
+
+.title {
+  margin-bottom: 50px;
+}
+
+.submitButton {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.input {
+  margin-bottom: 20px;
+}
+
+.linkWrapper {
+  font-size: 14px;
+  color: $primary;
+}
+
+.link {
+  font-size: 14px;
+  color: $subtitle;
+  text-decoration: underline;
+}
