@@ -34,3 +34,9 @@
   padding: 0;
   border: 1px solid $primary;
 }
+
+.pencilIcon {
+  &:disabled {
+    pointer-events: auto;
+  }
+}
