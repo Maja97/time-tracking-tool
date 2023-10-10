@@ -1,22 +1,22 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { TabMenu } from 'primereact/tabmenu';
-import Image from 'next/image';
-import { MenuItem } from 'primereact/menuitem';
-import styles from './index.module.scss';
-import Button from '../shared/button';
-import TimeIcon from '@public/icons/TimeIcon';
-import LogoutIcon from '@public/icons/LogoutIcon';
-import strings from '@app/consts/strings.json';
+import cookieKeys from '@app/_consts/cookies';
+import { Routes } from '@app/_consts/routes';
+import strings from '@app/_consts/strings.json';
+import { auth } from '@app/_firebase/firebase';
 import HistoryIcon from '@public/icons/HistoryIcon';
-import { useCookies } from 'next-client-cookies';
-import cookieKeys from '@app/consts/cookies';
+import LogoutIcon from '@public/icons/LogoutIcon';
+import TimeIcon from '@public/icons/TimeIcon';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '@app/firebase/firebase';
+import { useCookies } from 'next-client-cookies';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Routes } from '@app/consts/routes';
+import { MenuItem } from 'primereact/menuitem';
+import { TabMenu } from 'primereact/tabmenu';
 import { Toast } from 'primereact/toast';
+import { useEffect, useRef, useState } from 'react';
+import Button from '../shared/button';
+import styles from './index.module.scss';
 
 function NavBar() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -26,19 +26,21 @@ function NavBar() {
   const toastRef = useRef<Toast>(null);
   const cookies = useCookies();
   const router = useRouter();
-  if (true)
-    menuItems = [
-      {
-        label: strings.navbar.trackers,
-        id: 'trackers',
-        icon: <TimeIcon fill={getIconFill(0)} />
-      },
-      {
-        label: strings.navbar.history,
-        id: 'history',
-        icon: <HistoryIcon fill={getIconFill(1)} />
-      }
-    ];
+
+  menuItems = [
+    {
+      label: strings.navbar.trackers,
+      id: 'trackers',
+      icon: <TimeIcon fill={getIconFill(0)} />,
+      url: Routes.Trackers
+    },
+    {
+      label: strings.navbar.history,
+      id: 'history',
+      icon: <HistoryIcon fill={getIconFill(1)} />,
+      url: Routes.History
+    }
+  ];
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {

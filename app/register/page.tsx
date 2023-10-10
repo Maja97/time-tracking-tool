@@ -1,14 +1,14 @@
 'use client';
-import Button from '@app/components/shared/button';
-import { Routes } from '@app/consts/routes';
-import { validateEmail } from '@app/helpers/validation';
-import useRegister from '@app/hooks/useRegister';
+import Button from '@app/_components/shared/button';
+import { Routes } from '@app/_consts/routes';
+import { validateEmail } from '@app/_helpers/validation';
+import useRegister from '@app/_hooks/useRegister';
 import Link from 'next/link';
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import ControlledInput from '../components/shared/controlledInput';
-import strings from '../consts/strings.json';
+import ControlledInput from '../_components/shared/controlledInput';
+import strings from '../_consts/strings.json';
 import styles from './page.module.scss';
 
 export interface FormInputs {

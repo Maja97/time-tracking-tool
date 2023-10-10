@@ -1,5 +1,5 @@
-@import '@app/styles/colors';
-@import '@app/styles/mixins';
+@import '@app/_styles/colors';
+@import '@app/_styles/mixins';
 
 .base {
   @include flex-align-center;
@@ -29,4 +29,9 @@
   color: $secondary;
   font-size: 14px;
   text-decoration: underline;
+}
+
+.text {
+  padding: 0;
+  background-color: transparent;
 }

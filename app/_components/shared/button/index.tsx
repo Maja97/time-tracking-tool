@@ -1,7 +1,7 @@
 import { Button as BaseButton } from 'primereact/button';
 import styles from './index.module.scss';
 
-type Variant = 'primary' | 'secondary' | 'underlined';
+type Variant = 'primary' | 'secondary' | 'underlined' | 'text';
 
 interface Props {
   children: JSX.Element | string;

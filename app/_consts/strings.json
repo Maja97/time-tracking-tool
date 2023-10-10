@@ -32,5 +32,6 @@
       "password": "Password",
       "repeatPassword": "Repeat password"
     }
-  }
+  },
+  "required": "Field is required"
 }

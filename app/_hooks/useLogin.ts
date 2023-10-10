@@ -1,6 +1,6 @@
-import cookieKeys from '@app/consts/cookies';
-import { Routes } from '@app/consts/routes';
-import { auth } from '@app/firebase/firebase';
+import cookieKeys from '@app/_consts/cookies';
+import { Routes } from '@app/_consts/routes';
+import { auth } from '@app/_firebase/firebase';
 import { FormInputs } from '@app/login/page';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useCookies } from 'next-client-cookies';

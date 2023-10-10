@@ -1,8 +1,8 @@
-import strings from '@app/consts/strings.json';
-import styles from '@app/styles/404.module.scss';
+import strings from '@app/_consts/strings.json';
+import styles from '@app/_styles/404.module.scss';
 import Link from 'next/link';
-import Button from './components/shared/button';
-import { Routes } from './consts/routes';
+import Button from './_components/shared/button';
+import { Routes } from './_consts/routes';
 
 export default function NotFound() {
   return (

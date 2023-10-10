@@ -1,6 +1,7 @@
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 import { Controller, FieldValues, Validate, useFormContext } from 'react-hook-form';
+import strings from '@app/_consts/strings.json';
 
 type InputType = 'text' | 'password' | 'number' | 'email';
 interface Props extends React.HTMLProps<HTMLInputElement> {
@@ -31,7 +32,7 @@ const ControlledInput = ({ label, name, required, className, type = 'text', vali
       name={name}
       control={control}
       defaultValue=""
-      rules={{ required: required ? 'Field is required' : undefined, validate: validate }}
+      rules={{ required: required ? strings.required : undefined, validate: validate }}
       render={({ field: { name, onChange, value }, fieldState: { error } }) => (
         <div className={className}>
           <label htmlFor={name} className={classNames({ 'p-error': errors.value })}></label>
