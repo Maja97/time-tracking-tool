@@ -1,0 +1,36 @@
+@import '@app/_styles/colors';
+
+.titleSection {
+  margin-top: 207px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 86px;
+}
+
+.title {
+  color: $title;
+}
+
+.buttonsSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-bottom: 36px;
+}
+
+.rowButtons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.spinner {
+  width: 100%;
+}
+
+.editCell {
+  padding: 0;
+  border: 1px solid $primary;
+}

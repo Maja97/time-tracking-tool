@@ -33,5 +33,15 @@
       "repeatPassword": "Repeat password"
     }
   },
-  "required": "Field is required"
+  "required": "Field is required",
+  "trackers": {
+    "today": "Today",
+    "new": "Start new timer",
+    "stop": "Stop timer",
+    "table": {
+      "duration": "Time logged",
+      "description": "Description",
+      "actions": "Actions"
+    }
+  }
 }
