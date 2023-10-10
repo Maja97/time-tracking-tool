@@ -2,7 +2,7 @@ import cookieKeys from '@app/_consts/cookies';
 import { db } from '@app/_firebase/firebase';
 import { subtractPausesFromDuration } from '@app/_helpers/functions';
 import { FirebaseTracker, Pause, Tracker } from '@app/_types/Tracker';
-import { trackersCollectionName } from '@app/trackers/page';
+import { trackersCollectionName } from '@app/_consts/consts';
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { useCookies } from 'next-client-cookies';
 import { useCallback, useEffect, useRef, useState } from 'react';

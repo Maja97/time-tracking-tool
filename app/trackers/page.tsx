@@ -29,7 +29,7 @@ import { InputText } from 'primereact/inputtext';
 import styles from './page.module.scss';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import strings from '@app/_consts/strings.json';
-import { DATE_FORMAT } from '@app/_consts/consts';
+import { DATE_FORMAT, trackersCollectionName } from '@app/_consts/consts';
 
 interface TrackersData {
   id: string;
@@ -46,7 +46,6 @@ const defaultTracker = {
   description: '',
   pauses: []
 };
-export const trackersCollectionName = 'trackers';
 
 export default function Home() {
   const { trackers, setTrackers, isLoading, activeDuration, clearActiveInterval } = useTrackers();
