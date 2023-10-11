@@ -20,6 +20,8 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Nullable } from 'primereact/ts-helpers';
 import React, { useRef, useState } from 'react';
 import styles from './page.module.scss';
+import { useToast } from '@app/_hooks/useToast';
+import { Toast } from 'primereact/toast';
 
 export interface Filters {
   search: string;
@@ -37,6 +39,7 @@ function History() {
   const [filters, setFilters] = useState<Filters>({ startDate: null, endDate: null, search: '' });
   const { trackers, setTrackers, isLoading } = useHistoryTrackers();
   const { isOpen, itemId, closeModal, openModal } = useModal();
+  const { toastRef, showToast } = useToast();
   const searchTimerRef = useRef<NodeJS.Timeout>();
 
   const onRowEditComplete = async (e: DataTableRowEditCompleteEvent) => {
@@ -46,10 +49,13 @@ function History() {
       prev.map((item) => (item.id === e.data.id ? { ...item, description: desc } : item))
     );
     const trackerDoc = doc(db, trackersCollectionName, id);
-
-    await updateDoc(trackerDoc, {
-      description: desc
-    });
+    try {
+      await updateDoc(trackerDoc, {
+        description: desc
+      });
+    } catch (e) {
+      showToast('error', strings.errors.updateTracker);
+    }
   };
 
   const filteredData = trackers
@@ -68,7 +74,7 @@ function History() {
         await deleteDoc(trackerDoc);
         setTrackers((prev) => prev.filter((tracker) => tracker.id !== id));
       } catch (e) {
-        console.log('could not delete');
+        showToast('error', strings.errors.deleteTracker);
       }
       closeModal();
     }
@@ -195,6 +201,7 @@ function History() {
         key="delete-tracker-modal"
         content={strings.modal.deleteTracker.body}
       />
+      <Toast ref={toastRef} position="bottom-center" />
     </main>
   );
 }

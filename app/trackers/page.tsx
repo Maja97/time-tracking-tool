@@ -1,9 +1,13 @@
 'use client';
 import Button from '@app/_components/shared/button';
+import Modal from '@app/_components/shared/modal';
+import { DATE_FORMAT, trackersCollectionName } from '@app/_consts/consts';
 import cookieKeys from '@app/_consts/cookies';
+import strings from '@app/_consts/strings.json';
 import { db } from '@app/_firebase/firebase';
 import { secondsToTimeFormat } from '@app/_helpers/functions';
 import useActiveTrackers from '@app/_hooks/useActiveTrackers';
+import useModal from '@app/_hooks/useModal';
 import { Tracker } from '@app/_types/Tracker';
 import CalendarIcon from '@public/icons/CalendarIcon';
 import PauseIcon from '@public/icons/PauseIcon';
@@ -26,13 +30,11 @@ import { useCookies } from 'next-client-cookies';
 import { Column, ColumnEditorOptions } from 'primereact/column';
 import { DataTable, DataTableRowEditCompleteEvent } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
-import styles from './page.module.scss';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import strings from '@app/_consts/strings.json';
-import { DATE_FORMAT, trackersCollectionName } from '@app/_consts/consts';
-import Modal from '@app/_components/shared/modal';
-import useModal from '@app/_hooks/useModal';
-import { MouseEvent, MouseEventHandler, useState } from 'react';
+import { useState } from 'react';
+import styles from './page.module.scss';
+import { useToast } from '@app/_hooks/useToast';
+import { Toast } from 'primereact/toast';
 
 interface TrackersData {
   id: string;
@@ -51,20 +53,21 @@ const defaultTracker = {
 };
 
 export default function Home() {
+  const [addDisabled, setAddDisabled] = useState(false);
+
   const { trackers, setTrackers, isLoading, activeDuration, clearActiveInterval } =
     useActiveTrackers();
   const cookies = useCookies();
   const { isOpen, itemId, closeModal, openModal } = useModal();
+  const { toastRef, showToast } = useToast();
 
   const activeTracker = trackers.some((tracker) => !tracker.finished && !tracker.paused);
   const activeId = trackers.find((tracker) => !tracker.paused)?.id;
 
-  const [addDisabled, setAddDisabled] = useState(false);
-
   const addTracker = async () => {
     setAddDisabled(true);
     if (activeTracker) {
-      console.log('cannot, there is an active one');
+      showToast('warn', strings.errors.trackerAlreadyActive);
     } else {
       const startTime = new Date();
       try {
@@ -81,31 +84,35 @@ export default function Home() {
           setTrackers((prev) => [{ ...tracker, id: docRef.id }, ...prev]);
         }
       } catch (e) {
-        console.error('Error adding document: ', e);
+        showToast('error', strings.errors.addTracker);
       }
     }
   };
 
   const onPause = async (id: string) => {
     const trackerDoc = doc(db, trackersCollectionName, id);
-    await updateDoc(trackerDoc, {
-      paused: true,
-      pauses: arrayUnion({ startTime: new Date(), endTime: null })
-    });
+    try {
+      await updateDoc(trackerDoc, {
+        paused: true,
+        pauses: arrayUnion({ startTime: new Date(), endTime: null })
+      });
 
-    setTrackers((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, paused: true, duration: activeDuration || 0 } : item
-      )
-    );
-    clearActiveInterval();
-    setAddDisabled(false);
+      setTrackers((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, paused: true, duration: activeDuration || 0 } : item
+        )
+      );
+      clearActiveInterval();
+      setAddDisabled(false);
+    } catch (e) {
+      showToast('error', strings.errors.pauseTracker);
+    }
   };
 
   const onResume = async (id: string, duration: number) => {
     const now = new Date();
     if (activeTracker) {
-      console.log('nope');
+      showToast('warn', strings.errors.trackerAlreadyActive);
     } else {
       const docRef = doc(db, trackersCollectionName, id);
       const docSnap = await getDoc(docRef);
@@ -115,13 +122,17 @@ export default function Home() {
           pause.endTime === null ? { startTime: pause.startTime, endTime: now } : pause
         );
       const trackerDoc = doc(db, trackersCollectionName, id);
-      await updateDoc(trackerDoc, {
-        paused: false,
-        pauses: newPauses
-      });
-      setTrackers((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, paused: false } : item))
-      );
+      try {
+        await updateDoc(trackerDoc, {
+          paused: false,
+          pauses: newPauses
+        });
+        setTrackers((prev) =>
+          prev.map((item) => (item.id === id ? { ...item, paused: false } : item))
+        );
+      } catch (e) {
+        showToast('error', strings.errors.resumeTracker);
+      }
     }
   };
 
@@ -132,13 +143,17 @@ export default function Home() {
       const now = new Date();
       const trackerDoc = doc(db, trackersCollectionName, id);
 
-      await updateDoc(trackerDoc, {
-        finished: true,
-        duration: tracker?.paused ? tracker.duration : activeDuration,
-        endTime: now
-      });
-      setTrackers((prev) => prev.filter((item) => item.id !== id));
-      clearActiveInterval();
+      try {
+        await updateDoc(trackerDoc, {
+          finished: true,
+          duration: tracker?.paused ? tracker.duration : activeDuration,
+          endTime: now
+        });
+        setTrackers((prev) => prev.filter((item) => item.id !== id));
+        clearActiveInterval();
+      } catch (e) {
+        showToast('error', strings.errors.stopTracker);
+      }
     }
   };
 
@@ -149,7 +164,7 @@ export default function Home() {
         await deleteDoc(trackerDoc);
         setTrackers((prev) => prev.filter((tracker) => tracker.id !== id));
       } catch (e) {
-        console.log('could not delete');
+        showToast('error', strings.errors.deleteTracker);
       }
       closeModal();
     }
@@ -239,9 +254,13 @@ export default function Home() {
     );
     const trackerDoc = doc(db, trackersCollectionName, id);
 
-    await updateDoc(trackerDoc, {
-      description: desc
-    });
+    try {
+      await updateDoc(trackerDoc, {
+        description: desc
+      });
+    } catch (e) {
+      showToast('error', strings.errors.updateTracker);
+    }
   };
 
   return (
@@ -299,6 +318,7 @@ export default function Home() {
         key="delete-tracker-modal"
         content={strings.modal.deleteTracker.body}
       />
+      <Toast ref={toastRef} position="bottom-center" />
     </main>
   );
 }

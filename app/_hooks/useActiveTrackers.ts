@@ -64,7 +64,7 @@ const useActiveTrackers = () => {
         setLoading(false);
       });
     } catch (e) {
-      console.log('error', e);
+      console.log(e);
     }
   }, [cookies]);
 
