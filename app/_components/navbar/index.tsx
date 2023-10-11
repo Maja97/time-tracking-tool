@@ -7,10 +7,10 @@ import { auth } from '@app/_firebase/firebase';
 import HistoryIcon from '@public/icons/HistoryIcon';
 import LogoutIcon from '@public/icons/LogoutIcon';
 import TimeIcon from '@public/icons/TimeIcon';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 import { useCookies } from 'next-client-cookies';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { MenuItem } from 'primereact/menuitem';
 import { TabMenu } from 'primereact/tabmenu';
 import { Toast } from 'primereact/toast';
@@ -19,13 +19,18 @@ import Button from '../shared/button';
 import styles from './index.module.scss';
 
 function NavBar() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [showMenu, setShowMenu] = useState(false);
+  const pathName = usePathname();
+  const [activeIndex, setActiveIndex] = useState<number>();
   const getIconFill = (index: number) => (activeIndex === index ? '#F9F9FD' : '#C4C5D7');
   let menuItems: MenuItem[] = [];
   const toastRef = useRef<Toast>(null);
   const cookies = useCookies();
   const router = useRouter();
+
+  useEffect(() => {
+    const index = pathName === Routes.Trackers ? 0 : pathName === Routes.History ? 1 : undefined;
+    setActiveIndex(index);
+  }, [pathName]);
 
   menuItems = [
     {
@@ -41,17 +46,6 @@ function NavBar() {
       url: Routes.History
     }
   ];
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const uid = user.uid;
-        if (uid) setShowMenu(true);
-      } else {
-        setShowMenu(false);
-      }
-    });
-  }, []);
 
   const logout = () => {
     signOut(auth)
@@ -70,12 +64,12 @@ function NavBar() {
   };
 
   return (
-    <div className={`${styles.wrapper} ${!showMenu ? styles.wrapperPadding : ''}`}>
+    <div className={`${styles.wrapper} ${activeIndex === undefined ? styles.wrapperPadding : ''}`}>
       <div className={styles.flex}>
         <Image src="/logo.svg" alt="Company logo" width={160} height={44} />
         <h1 className={styles.title}>{strings.navbar.title}</h1>
       </div>
-      {showMenu ? (
+      {activeIndex !== undefined ? (
         <div className={styles.flex}>
           <TabMenu
             activeIndex={activeIndex}

@@ -30,6 +30,8 @@ import styles from './page.module.scss';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import strings from '@app/_consts/strings.json';
 import { DATE_FORMAT, trackersCollectionName } from '@app/_consts/consts';
+import Modal from '@app/_components/shared/modal';
+import useModal from '@app/_hooks/useModal';
 
 interface TrackersData {
   id: string;
@@ -50,6 +52,7 @@ const defaultTracker = {
 export default function Home() {
   const { trackers, setTrackers, isLoading, activeDuration, clearActiveInterval } = useTrackers();
   const cookies = useCookies();
+  const { isOpen, itemId, closeModal, openModal } = useModal();
 
   const activeTracker = trackers.some((tracker) => !tracker.finished && !tracker.paused);
   const activeId = trackers.find((tracker) => !tracker.paused)?.id;
@@ -129,13 +132,16 @@ export default function Home() {
     }
   };
 
-  const deleteTracker = async (id: string) => {
-    const trackerDoc = doc(db, trackersCollectionName, id);
-    try {
-      await deleteDoc(trackerDoc);
-      setTrackers((prev) => prev.filter((tracker) => tracker.id !== id));
-    } catch (e) {
-      console.log('could not delete');
+  const deleteTracker = async (id?: string) => {
+    if (id) {
+      const trackerDoc = doc(db, trackersCollectionName, id);
+      try {
+        await deleteDoc(trackerDoc);
+        setTrackers((prev) => prev.filter((tracker) => tracker.id !== id));
+      } catch (e) {
+        console.log('could not delete');
+      }
+      closeModal();
     }
   };
 
@@ -205,7 +211,7 @@ export default function Home() {
             <PencilIcon />
           </Button>
           <Button
-            onClick={() => deleteTracker(rowData.id)}
+            onClick={() => openModal(rowData.id)}
             variant="text"
             disabled={!trackers.find((tracker) => tracker.id === rowData.id)?.paused}>
             <TrashIcon />
@@ -271,6 +277,15 @@ export default function Home() {
             style={{ width: '20%' }}></Column>
         </DataTable>
       )}
+      <Modal
+        isOpen={isOpen}
+        action={deleteTracker}
+        title="Delete a tracker?"
+        closeModal={closeModal}
+        itemId={itemId}
+        key="delete-tracker-modal"
+        content="Are you sure you want to delete tracked time? This action is irreversible."
+      />
     </main>
   );
 }

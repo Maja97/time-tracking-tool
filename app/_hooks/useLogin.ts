@@ -11,11 +11,11 @@ import { RefObject } from 'react';
 const useLogin = (toastRef: RefObject<Toast>) => {
   const router = useRouter();
   const cookies = useCookies();
+
   const login = (data: FormInputs) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         cookies.set(cookieKeys.TOKEN, userCredential.user.uid);
-
         router.push(Routes.Home);
       })
       .catch((error) => {

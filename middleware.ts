@@ -5,15 +5,17 @@ import { NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get(cookieKeys.TOKEN);
+  const path = request.nextUrl.pathname;
   if (token) {
-    if (
-      request.nextUrl.pathname.startsWith(Routes.Login) ||
-      request.nextUrl.pathname.startsWith(Routes.Register)
-    ) {
+    if (path.startsWith(Routes.Login) || path.startsWith(Routes.Register)) {
       return NextResponse.redirect(new URL(Routes.Home, request.url));
     }
   } else {
-    if (request.nextUrl.pathname === Routes.Home) {
+    if (
+      path === Routes.Home ||
+      path.startsWith(Routes.Trackers) ||
+      path.startsWith(Routes.History)
+    ) {
       return NextResponse.redirect(new URL(Routes.Login, request.url));
     }
   }
