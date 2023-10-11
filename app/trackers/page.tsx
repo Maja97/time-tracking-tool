@@ -3,7 +3,7 @@ import Button from '@app/_components/shared/button';
 import cookieKeys from '@app/_consts/cookies';
 import { db } from '@app/_firebase/firebase';
 import { secondsToTimeFormat } from '@app/_helpers/functions';
-import useTrackers from '@app/_hooks/useTrackers';
+import useActiveTrackers from '@app/_hooks/useActiveTrackers';
 import { Tracker } from '@app/_types/Tracker';
 import CalendarIcon from '@public/icons/CalendarIcon';
 import PauseIcon from '@public/icons/PauseIcon';
@@ -32,6 +32,7 @@ import strings from '@app/_consts/strings.json';
 import { DATE_FORMAT, trackersCollectionName } from '@app/_consts/consts';
 import Modal from '@app/_components/shared/modal';
 import useModal from '@app/_hooks/useModal';
+import { MouseEvent, MouseEventHandler, useState } from 'react';
 
 interface TrackersData {
   id: string;
@@ -50,14 +51,18 @@ const defaultTracker = {
 };
 
 export default function Home() {
-  const { trackers, setTrackers, isLoading, activeDuration, clearActiveInterval } = useTrackers();
+  const { trackers, setTrackers, isLoading, activeDuration, clearActiveInterval } =
+    useActiveTrackers();
   const cookies = useCookies();
   const { isOpen, itemId, closeModal, openModal } = useModal();
 
   const activeTracker = trackers.some((tracker) => !tracker.finished && !tracker.paused);
   const activeId = trackers.find((tracker) => !tracker.paused)?.id;
 
+  const [addDisabled, setAddDisabled] = useState(false);
+
   const addTracker = async () => {
+    setAddDisabled(true);
     if (activeTracker) {
       console.log('cannot, there is an active one');
     } else {
@@ -94,6 +99,7 @@ export default function Home() {
       )
     );
     clearActiveInterval();
+    setAddDisabled(false);
   };
 
   const onResume = async (id: string, duration: number) => {
@@ -121,11 +127,15 @@ export default function Home() {
 
   const onStop = async (id?: string) => {
     if (id) {
+      setAddDisabled(false);
+      const tracker = trackers.find((item) => item.id === id);
+      const now = new Date();
       const trackerDoc = doc(db, trackersCollectionName, id);
 
       await updateDoc(trackerDoc, {
         finished: true,
-        duration: secondsToTimeFormat(activeDuration || 0)
+        duration: tracker?.paused ? tracker.duration : activeDuration,
+        endTime: now
       });
       setTrackers((prev) => prev.filter((item) => item.id !== id));
       clearActiveInterval();
@@ -244,7 +254,10 @@ export default function Home() {
         )})`}</h1>
       </section>
       <section className={styles.buttonsSection}>
-        <Button disabled={activeTracker} onClick={addTracker} icon={<StopwatchIcon />}>
+        <Button
+          disabled={isLoading || addDisabled || activeTracker}
+          onClick={addTracker}
+          icon={<StopwatchIcon />}>
           {strings.trackers.new}
         </Button>
         <Button
@@ -280,11 +293,11 @@ export default function Home() {
       <Modal
         isOpen={isOpen}
         action={deleteTracker}
-        title="Delete a tracker?"
+        title={strings.modal.deleteTracker.title}
         closeModal={closeModal}
         itemId={itemId}
         key="delete-tracker-modal"
-        content="Are you sure you want to delete tracked time? This action is irreversible."
+        content={strings.modal.deleteTracker.body}
       />
     </main>
   );

@@ -43,5 +43,25 @@
       "description": "Description",
       "actions": "Actions"
     }
+  },
+  "history": {
+    "title": "Trackers history",
+    "filters": {
+      "startDate": "Start date",
+      "endDate": "End date",
+      "description": "Description contains"
+    },
+    "table": {
+      "date": "Date",
+      "description": "Description",
+      "duration": "Time tracked",
+      "actions": "Actions"
+    }
+  },
+  "modal": {
+    "deleteTracker": {
+      "title": "Delete a tracker?",
+      "body": "Are you sure you want to delete tracked time? This action is irreversible."
+    }
   }
 }

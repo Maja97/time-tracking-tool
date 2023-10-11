@@ -5,3 +5,10 @@ export enum Routes {
   Trackers = '/trackers',
   History = '/history'
 }
+
+export enum ProtectedRoutes {
+  '/trackers' = 0,
+  '/history' = 1
+}
+
+export const unprotectedRoutes = ['/login', '/register'];

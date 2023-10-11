@@ -1,7 +1,7 @@
 'use client';
 
 import cookieKeys from '@app/_consts/cookies';
-import { Routes } from '@app/_consts/routes';
+import { ProtectedRoutes, Routes } from '@app/_consts/routes';
 import strings from '@app/_consts/strings.json';
 import { auth } from '@app/_firebase/firebase';
 import HistoryIcon from '@public/icons/HistoryIcon';
@@ -14,25 +14,14 @@ import { usePathname, useRouter } from 'next/navigation';
 import { MenuItem } from 'primereact/menuitem';
 import { TabMenu } from 'primereact/tabmenu';
 import { Toast } from 'primereact/toast';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import Button from '../shared/button';
 import styles from './index.module.scss';
 
 function NavBar() {
   const pathName = usePathname();
-  const [activeIndex, setActiveIndex] = useState<number>();
-  const getIconFill = (index: number) => (activeIndex === index ? '#F9F9FD' : '#C4C5D7');
-  let menuItems: MenuItem[] = [];
-  const toastRef = useRef<Toast>(null);
-  const cookies = useCookies();
-  const router = useRouter();
-
-  useEffect(() => {
-    const index = pathName === Routes.Trackers ? 0 : pathName === Routes.History ? 1 : undefined;
-    setActiveIndex(index);
-  }, [pathName]);
-
-  menuItems = [
+  const getIconFill = (index: number) => (0 === index ? '#F9F9FD' : '#C4C5D7');
+  let menuItems: MenuItem[] = [
     {
       label: strings.navbar.trackers,
       id: 'trackers',
@@ -46,6 +35,9 @@ function NavBar() {
       url: Routes.History
     }
   ];
+  const toastRef = useRef<Toast>(null);
+  const cookies = useCookies();
+  const router = useRouter();
 
   const logout = () => {
     signOut(auth)
@@ -64,20 +56,17 @@ function NavBar() {
   };
 
   return (
-    <div className={`${styles.wrapper} ${activeIndex === undefined ? styles.wrapperPadding : ''}`}>
+    <div
+      className={`${styles.wrapper} ${
+        pathName === '/login' || pathName === '/register' ? styles.wrapperPadding : ''
+      }`}>
       <div className={styles.flex}>
         <Image src="/logo.svg" alt="Company logo" width={160} height={44} />
         <h1 className={styles.title}>{strings.navbar.title}</h1>
       </div>
-      {activeIndex !== undefined ? (
+      {pathName !== '/login' && pathName !== '/register' ? (
         <div className={styles.flex}>
-          <TabMenu
-            activeIndex={activeIndex}
-            onTabChange={(e) => {
-              setActiveIndex(e.index);
-            }}
-            model={menuItems}
-          />
+          <TabMenu activeIndex={ProtectedRoutes[pathName]} model={menuItems} />
           <Button
             icon={<LogoutIcon />}
             variant="secondary"
