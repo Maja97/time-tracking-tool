@@ -7,7 +7,7 @@ import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { useCookies } from 'next-client-cookies';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const useTrackers = () => {
+const useActiveTrackers = () => {
   const [trackers, setTrackers] = useState<Tracker[]>([]);
   const [activeDuration, setActiveDuration] = useState<number>();
   const [isLoading, setLoading] = useState(true);
@@ -64,7 +64,7 @@ const useTrackers = () => {
         setLoading(false);
       });
     } catch (e) {
-      console.log('error', e);
+      console.log(e);
     }
   }, [cookies]);
 
@@ -92,4 +92,4 @@ const useTrackers = () => {
   return { trackers, setTrackers, activeDuration, clearActiveInterval, isLoading };
 };
 
-export default useTrackers;
+export default useActiveTrackers;

@@ -1,0 +1,34 @@
+@import '@app/_styles/colors';
+
+.title {
+  margin-top: 207px;
+  color: $title;
+  line-height: 24px;
+  margin-bottom: 53px;
+}
+
+.spinner {
+  width: 100%;
+}
+
+.rowButtons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.editCell {
+  padding: 0;
+  border: 1px solid $primary;
+}
+
+.filters {
+  display: flex;
+  padding: 43px 50px;
+  background-color: #f9f9fd;
+  gap: 40px;
+}
+
+.filter {
+  flex: 1;
+}

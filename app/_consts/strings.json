@@ -43,5 +43,36 @@
       "description": "Description",
       "actions": "Actions"
     }
+  },
+  "history": {
+    "title": "Trackers history",
+    "filters": {
+      "startDate": "Start date",
+      "endDate": "End date",
+      "description": "Description contains"
+    },
+    "table": {
+      "date": "Date",
+      "description": "Description",
+      "duration": "Time tracked",
+      "actions": "Actions"
+    }
+  },
+  "modal": {
+    "deleteTracker": {
+      "title": "Delete a tracker?",
+      "body": "Are you sure you want to delete tracked time? This action is irreversible."
+    }
+  },
+  "errors": {
+    "genericTitle": "Error occured",
+    "logout": "Failed to logout, try again",
+    "trackerAlreadyActive": "Cannot start a new tracker while you have an active one",
+    "deleteTracker": "Failed to delete tracker, please try again",
+    "resumeTracker": "Failed to resume tracker, please try again",
+    "addTracker": "Failed to add tracker, please try again",
+    "pauseTracker": "Failed to pause tracker, please try again",
+    "stopTracker": "Failed to stop tracker, please try again",
+    "updateTracker": "Failed to update tracker description, please try again"
   }
 }

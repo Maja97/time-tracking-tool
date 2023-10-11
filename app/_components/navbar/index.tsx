@@ -1,9 +1,10 @@
 'use client';
 
 import cookieKeys from '@app/_consts/cookies';
-import { Routes } from '@app/_consts/routes';
+import { ProtectedRoutes, Routes, unprotectedRoutes } from '@app/_consts/routes';
 import strings from '@app/_consts/strings.json';
 import { auth } from '@app/_firebase/firebase';
+import { useToast } from '@app/_hooks/useToast';
 import HistoryIcon from '@public/icons/HistoryIcon';
 import LogoutIcon from '@public/icons/LogoutIcon';
 import TimeIcon from '@public/icons/TimeIcon';
@@ -14,25 +15,17 @@ import { usePathname, useRouter } from 'next/navigation';
 import { MenuItem } from 'primereact/menuitem';
 import { TabMenu } from 'primereact/tabmenu';
 import { Toast } from 'primereact/toast';
-import { useEffect, useRef, useState } from 'react';
 import Button from '../shared/button';
 import styles from './index.module.scss';
 
 function NavBar() {
-  const pathName = usePathname();
-  const [activeIndex, setActiveIndex] = useState<number>();
-  const getIconFill = (index: number) => (activeIndex === index ? '#F9F9FD' : '#C4C5D7');
-  let menuItems: MenuItem[] = [];
-  const toastRef = useRef<Toast>(null);
+  const { toastRef, showToast } = useToast();
   const cookies = useCookies();
   const router = useRouter();
 
-  useEffect(() => {
-    const index = pathName === Routes.Trackers ? 0 : pathName === Routes.History ? 1 : undefined;
-    setActiveIndex(index);
-  }, [pathName]);
-
-  menuItems = [
+  const pathName = usePathname();
+  const getIconFill = (index: number) => (0 === index ? '#F9F9FD' : '#C4C5D7');
+  let menuItems: MenuItem[] = [
     {
       label: strings.navbar.trackers,
       id: 'trackers',
@@ -54,28 +47,23 @@ function NavBar() {
         cookies.remove(cookieKeys.TOKEN);
       })
       .catch((error) => {
-        toastRef?.current?.show({
-          severity: 'error',
-          summary: 'Failed to logout, try again',
-          detail: error.code,
-          life: 3000
-        });
+        showToast('error', strings.errors.logout, error.code, 3000);
       });
   };
 
   return (
-    <div className={`${styles.wrapper} ${activeIndex === undefined ? styles.wrapperPadding : ''}`}>
+    <div
+      className={`${styles.wrapper} ${
+        unprotectedRoutes.includes(pathName) ? styles.wrapperPadding : ''
+      }`}>
       <div className={styles.flex}>
         <Image src="/logo.svg" alt="Company logo" width={160} height={44} />
         <h1 className={styles.title}>{strings.navbar.title}</h1>
       </div>
-      {activeIndex !== undefined ? (
+      {!unprotectedRoutes.includes(pathName) ? (
         <div className={styles.flex}>
           <TabMenu
-            activeIndex={activeIndex}
-            onTabChange={(e) => {
-              setActiveIndex(e.index);
-            }}
+            activeIndex={ProtectedRoutes[pathName as keyof typeof ProtectedRoutes]}
             model={menuItems}
           />
           <Button
